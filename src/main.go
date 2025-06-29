@@ -2,6 +2,9 @@ package main
 
 import (
 	"context"
+	"github.com/NewChakrit/golang_gin_vuejs_full-stack/controller"
+	"github.com/NewChakrit/golang_gin_vuejs_full-stack/repository"
+	"github.com/NewChakrit/golang_gin_vuejs_full-stack/services"
 	"log"
 	"net/http"
 	"os"
@@ -21,6 +24,14 @@ func main() {
 	}
 
 	router := gin.Default()
+
+	transactionRepository := repository.NewTransactionRepository(db.DB)
+	transactionService := services.NewTransactionService(transactionRepository)
+
+	controller.NewController(&controller.Config{
+		router,
+		transactionService,
+	})
 
 	srv := &http.Server{
 		Addr:    ":8080",

@@ -28,7 +28,10 @@ func NewController(c *Config) {
 	apiRouters := c.R.Group("/api") // start path with /api
 
 	{
+		apiRouters.GET("/tnx", controller.FindAllTransactions)
 		apiRouters.POST("/txn/add", controller.AddTransactions)
+		apiRouters.POST("/tnx/update", controller.EditTransactions)
+		apiRouters.DELETE("/txn/delete/:id", controller.DeleteTransactions)
 	}
 }
 

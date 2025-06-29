@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/jmoiron/sqlx"
 	"log"
 	"os"
+
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 )
 
 type dbConn struct {
