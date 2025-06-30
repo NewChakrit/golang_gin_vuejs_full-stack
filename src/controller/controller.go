@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"github.com/NewChakrit/golang_gin_vuejs_full-stack/entity"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -28,9 +29,9 @@ func NewController(c *Config) {
 	apiRouters := c.R.Group("/api") // start path with /api
 
 	{
-		apiRouters.GET("/tnx", controller.FindAllTransactions)
+		apiRouters.GET("/txn", controller.FindAllTransactions)
 		apiRouters.POST("/txn/add", controller.AddTransactions)
-		apiRouters.POST("/tnx/update", controller.EditTransactions)
+		apiRouters.POST("/txn/update", controller.EditTransactions)
 		apiRouters.DELETE("/txn/delete/:id", controller.DeleteTransactions)
 	}
 }
@@ -38,6 +39,7 @@ func NewController(c *Config) {
 func (c *Controller) FindAllTransactions(ctx *gin.Context) {
 	transactions, err := c.TransactionService.FindAll(ctx.Request.Context())
 	if err != nil {
+		log.Printf("FindAll error: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -83,9 +85,9 @@ func (c *Controller) DeleteTransactions(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
 
-	if err = ctx.ShouldBindJSON(&id); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	}
+	//if err = ctx.ShouldBindJSON(&id); err != nil {
+	//	ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	//}
 
 	err = c.TransactionService.Delete(ctx.Request.Context(), id)
 	if err != nil {
